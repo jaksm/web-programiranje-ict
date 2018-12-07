@@ -12,13 +12,34 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <section class="hero is-medium is-dark is-bold">
+    <section class="hero is-dark is-bold">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Crypto Tracker</h1>
-          <h2 class="subtitle">
-            Ostanite u toku sa desavanjima na polju kripto valuta.
-          </h2>
+          <div class="level">
+            <div class="level-left">
+              <div>
+                <h1 class="title">Crypto News</h1>
+                <h2 class="subtitle">
+                  Ostanite u toku sa desavanjima na polju kripto valuta.
+                </h2>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="field has-addons">
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    placeholder="Pretraga"
+                    id="searchBox"
+                  />
+                </div>
+                <div class="control">
+                  <button class="button is-primary" id="search">Search</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -32,10 +53,9 @@
             >https://www.cryptocompare.com</a
           >
         </h2>
-        <div class="columns posts is-multiline">
-          <div class="column post is-one-third box">
-            <h2 class="title is-5">Lorem, ipsum.</h2>
-          </div>
+        <!-- Post Container -->
+        <div class="container" id="posts">
+          <!-- Dinamicno generisani postovi -->
         </div>
       </div>
     </section>

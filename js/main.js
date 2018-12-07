@@ -2,30 +2,67 @@ const API = "https://min-api.cryptocompare.com/data";
 const API_KEY =
   "&api_key=9003fd5d6c34ac3309b6f48961bdf30b6fe461bfe1bb74b4803a1c4645f68915";
 
-/**
-
-{
-  "id": "719379",
-  "guid": "https://www.livebitcoinnews.com/?p=52014",
-  "published_on": 1544140838,
-  "imageurl": "https://images.cryptocompare.com/news/livebitcoinnews/a2g090gg02g.jpeg",
-  "title": "Cryptocurrency Still a Minute Portion of Money Laundering Crimes, Says Police in Japan",
-  "url": "https://www.livebitcoinnews.com/cryptocurrency-still-a-minute-portion-of-money-laundering-crimes-says-police-in-japan/",
-  "source": "livebitcoinnews",
-  "body": "Law enforcement in Japan says cryptocurrency money laundering constitutes only a minor portion of the total cases of money laundering in the country. This assertion comes even as police authorities say instances of virtual currency-related money laundering are on the rise. Two Percent According to the Japan Times, the country’s National Police Agency (NPA) announced...The post Cryptocurrency Still a Minute Portion of Money Laundering Crimes, Says Police in Japan appeared first on Live Bitcoin News.",
-  "tags": "Altcoin News|Bitcoin News|News|cryptocurrency money laundering|FSA|Japan|Money Laundering|NPA",
-  "categories": "Asia|BTC|Regulation",
-  "upvotes": "0",
-  "downvotes": "0",
-  "lang": "EN",
-  "source_info": {
-    "name": "Live Bitcoin News",
-    "lang": "EN",
-    "img": "https://images.cryptocompare.com/news/default/livebitcoinnews.png"
-  }
-}
-
-*/
+const createPost = (parentNodeId, post) => {
+  const parentNode = document.getElementById(parentNodeId);
+  // Kreiranje elemenata
+  const createElement = (classList, tagName, content, attrList) => {
+    const el = document.createElement(tagName);
+    if (classList) {
+      classList.forEach(i => {
+        el.classList.add(i);
+      });
+    }
+    if (attrList) {
+      attrList.forEach(i => {
+        el.setAttribute(i.name, i.value);
+      });
+    }
+    if (content) {
+      const c = document.createTextNode(content);
+      el.appendChild(c);
+    }
+    return el;
+  };
+  // Kreiranje post kartice
+  const div = createElement(["box"], "div");
+  const figure = createElement(["image", "is-16by9"]);
+  const img = createElement(null, "img", null, [
+    { name: "src", value: post.imageurl }
+  ]);
+  figure.appendChild(img);
+  div.appendChild(figure);
+  const hr = createElement(null, "hr");
+  div.appendChild(hr);
+  const h2 = createElement(["title", "is-4"], "h2");
+  const a = createElement(null, "a", post.title, [
+    { name: "href", value: post.url }
+  ]);
+  h2.appendChild(a);
+  div.appendChild(h2);
+  const h3 = createElement(
+    ["subtitle"],
+    "h3",
+    new Date(post.published_on).toLocaleDateString()
+  );
+  div.appendChild(h2);
+  const categories = post.categories.split("|");
+  categories.forEach(category => {
+    const tag = createElement(["tag"], "span", category);
+    div.appendChild(tag);
+  });
+  const source = createElement(["tag", "is-info"], "span", post.source);
+  div.appendChild(source);
+  const upvotes = createElement(["tag", "is-success"], "span", post.upvotes);
+  div.appendChild(upvotes);
+  const downvotes = createElement(["tag", "is-danger"], "span", post.downvotes);
+  div.appendChild(downvotes);
+  const hr2 = createElement(null, "hr");
+  div.appendChild(hr2);
+  const p = createElement(null, "p", post.body);
+  div.appendChild(p);
+  // Insertovanje kartice u post container
+  parentNode.append(div);
+};
 
 const fetchData = fetch(`${API}/v2/news/?lang=EN${API_KEY}`)
   .then(res => res.json())
@@ -38,10 +75,19 @@ const fetchData = fetch(`${API}/v2/news/?lang=EN${API_KEY}`)
   });
 
 $(document).ready(async () => {
-  // try {
-  //   const posts = await fetchData;
-  //   console.log(JSON.stringify(posts[0], null, 2));
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  let posts;
+  try {
+    posts = await fetchData;
+    posts.forEach(post => {
+      createPost("posts", post);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  $("#search").click(e => {
+    const value = $("#searchBox").val();
+    const regex = new RegExp(value, "i");
+    // Pretraga
+    console.log($("#posts").find(".box"));
+  });
 });
