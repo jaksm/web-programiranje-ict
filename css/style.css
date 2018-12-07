@@ -3,3 +3,12 @@
 body {
   font-family: "Source Sans Pro", sans-serif;
 }
+
+.posts {
+  margin: 5rem -0.75rem !important;
+}
+
+.post {
+  margin: 0 0.75rem;
+  width: calc(30% - 0.75rem) !important;
+}
